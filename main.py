@@ -41,8 +41,8 @@ class MailPlugin(SectionPlugin):
         self.append(self.ui.inflate('mail:main'))
 
     def on_first_page_load(self):
-        username = 'beamin' # pwd.getpwuid(os.getuid()).pw_name
-        self.mbox = mailbox.mbox('/home/kstep/beamin', factory=message_factory(mailbox.mboxMessage))
+        username = pwd.getpwuid(os.getuid()).pw_name
+        self.mbox = mailbox.mbox('/var/mail/%s' % username, factory=message_factory(mailbox.mboxMessage))
         self.binder = Binder(self, self.find('main'))
         self.binder.populate()
 
