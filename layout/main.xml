@@ -1,0 +1,56 @@
+<body>
+    <pad id="main">
+        <hc>
+            <button style="mini" id="compose" icon="edit" text="Compose" />
+            <button style="mini" id="refresh" icon="refresh" text="Refresh" />
+            <!--
+            <button style="mini" id="reply" icon="mail-reply" text="Reply" />
+            <button style="mini" id="replyall" icon="mail-reply-all" text="Reply All" />
+            <button style="mini" id="forward" icon="mail-forward" text="Forward" />
+            <button style="mini" id="markread" icon="envelope-alt" text="Read" />
+            <button style="mini" id="delete" icon="trash" text="Delete" />
+            -->
+        </hc>
+        <bind:collection bind="mbox" id="mbox">
+            <dt bind="__items">
+                <dtr>
+                    <dth width="1%" />
+                    <dth text="{From}" />
+                    <dth text="{Subject}" />
+                    <dth text="{Date}" />
+                </dtr>
+            </dt>
+            <bind:template>
+                <dtr>
+                    <dtd>
+                        <hc>
+                            <icon bind="status" bindtransform="lambda s: 'envelope-alt' if 'R' in s else 'envelope'" />
+                            <icon icon="exclamation" bind:visible="status" bindtransform="lambda s: 'F' in s" />
+                            <icon icon="star" bind:visible="status" bindtransform="lambda s: 'O' not in s" />
+                        </hc>
+                    </dtd>
+                    <dtd><label bind="from" /></dtd>
+                    <dtd>
+                        <right>
+                            <icon icon="paperclip" bind:visible="content_type" bindtransform="lambda t: t.startswith('multipart/mixed')" />
+                        </right>
+                        <button style="link" id="viewmsg" bind:text="subject" bindtransform="lambda s: s or _('(No Subject)')" />
+                    </dtd>
+                    <dtd><label bind="date" bindtransform="lambda d: d.strftime('%b %d, %H:%M')" /></dtd>
+                </dtr>
+            </bind:template>
+        </bind:collection>
+    </pad>
+
+    <dialog visible="False" id="message_dialog" buttons="[
+        {'id': 'close', 'text': _('Close')}
+        ]">
+        <pad>
+            <bind:collection bind="headers">
+                <dt bind="__items" />
+                <bind:template>
+                </bind:template>
+            </bind:collection>
+        </pad>
+    </dialog>
+</body>
